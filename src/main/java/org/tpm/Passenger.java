@@ -10,13 +10,15 @@ public abstract class Passenger {
 
     protected double balance;
 
-    private Set<Activity> activities; // keeps track of signed up activities of this passenger
+    private Set<Activity> optedActivities; // keeps track of signed up activities of this passenger
+    protected Set<TravelPackage> optedPackages; // keeps track of opted travel packages of this passenger
 
     public Passenger(String name, String passengerNumber, double balance) {
         this.name = name;
         this.passengerNumber = passengerNumber;
         this.balance = balance;
-        this.activities = new HashSet<>();
+        this.optedActivities = new HashSet<>();
+        this.optedPackages = new HashSet<>();
     }
 
     public abstract boolean signUpForActivity(Activity activity);
@@ -24,11 +26,18 @@ public abstract class Passenger {
     public abstract double entryFee(Activity activity);
 
 
-    public void addActivity(Activity activity) {
+    public void addToOptedActivities(Activity activity) {
         if (activity == null) {
             throw new IllegalArgumentException("Activity cannot be null");
         }
-        activities.add(activity);
+        optedActivities.add(activity);
+    }
+
+    public void addToOptedPackages(TravelPackage pack) {
+        if (pack == null) {
+            throw new IllegalArgumentException("opted pack cannot be null");
+        }
+        optedPackages.add(pack);
     }
 
     //getters
@@ -45,8 +54,8 @@ public abstract class Passenger {
     }
 
 
-    public Set<Activity> getActivities() {
-        return activities;
+    public Set<Activity> getOptedActivities() {
+        return optedActivities;
     }
 
 
@@ -59,11 +68,11 @@ public abstract class Passenger {
             return false;
         }
         Passenger passenger = (Passenger) obj;
-        return Objects.equals(passengerNumber, passenger.passengerNumber);
+        return Objects.equals(getPassengerNumber(), passenger.getPassengerNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(passengerNumber);
+        return Objects.hash(getPassengerNumber());
     }
 }

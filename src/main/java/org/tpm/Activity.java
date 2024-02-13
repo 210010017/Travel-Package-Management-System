@@ -83,12 +83,12 @@ public class Activity {
             return false;
         }
         Activity activity = (Activity) obj;
-        return  Objects.equals(name, activity.name) && Double.compare(activity.cost, cost) == 0 &&
-                capacity == activity.capacity;
+        return  Objects.equals(getName(), activity.getName()) && Double.compare(activity.getCost(), getCost()) == 0 &&
+                getCapacity() == activity.getCapacity();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, cost, capacity);
+        return Objects.hash(getName(), getCost(), getCapacity());
     }
 }

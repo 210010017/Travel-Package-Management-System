@@ -33,7 +33,7 @@ public class Display {
             System.out.println("Balance: " + passenger.getBalance());
         }
         System.out.println("signed up activity -- at destination -- price paid :");
-        for(var activity : passenger.getActivities()) {
+        for(var activity : passenger.getOptedActivities()) {
             System.out.println("    " + activity.getName() + " -- " + activity.getParentDestination().getName() + " -- " + passenger.entryFee(activity) + "    ");
         }
     }

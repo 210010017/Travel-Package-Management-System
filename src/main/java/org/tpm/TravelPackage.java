@@ -1,6 +1,7 @@
 package org.tpm;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class TravelPackage {
@@ -29,6 +30,7 @@ public class TravelPackage {
         }
         if (passengers.size() < capacity) {
             passengers.add(passenger);
+            passenger.addToOptedPackages(this);
             return true;
         }
         else{
@@ -52,5 +54,22 @@ public class TravelPackage {
 
     public Set<Passenger> getPassengers() {
         return passengers;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        TravelPackage travelPackage = (TravelPackage) obj;
+        return Objects.equals(getName(), travelPackage.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
     }
 }       

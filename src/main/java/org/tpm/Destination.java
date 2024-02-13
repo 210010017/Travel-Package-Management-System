@@ -32,7 +32,6 @@ public class Destination {
         return activities;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -42,11 +41,11 @@ public class Destination {
             return false;
         }
         Destination destination = (Destination) obj;
-        return Objects.equals(name, destination.name);
+        return Objects.equals(getName(), destination.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(getName());
     }
 }

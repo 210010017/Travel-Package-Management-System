@@ -20,22 +20,34 @@ class GoldPassengerTest {
         assertEquals("John Doe", goldPassenger.getName());
         assertEquals("1", goldPassenger.getPassengerNumber());
         assertEquals(200.0, goldPassenger.getBalance());
-        assertTrue(goldPassenger.getActivities().isEmpty());
+        assertTrue(goldPassenger.getOptedActivities().isEmpty());
     }
 
     @Test
     void testSignUpForActivity() {
+        TravelPackage travelPackage = new TravelPackage("Package 1",2);
+        Destination destination = new Destination("Destination 1");
+        activity.setParentDestination(destination);
+        travelPackage.addDestination(destination);
+        goldPassenger.addToOptedPackages(travelPackage);
+
         assertTrue(goldPassenger.signUpForActivity(activity));
-        assertEquals(1, goldPassenger.getActivities().size());
-        assertTrue(goldPassenger.getActivities().contains(activity));
+        assertEquals(1, goldPassenger.getOptedActivities().size());
+        assertTrue(goldPassenger.getOptedActivities().contains(activity));
         assertEquals(110.0, goldPassenger.getBalance());
     }
 
     @Test
     void testSignUpForActivityWithInsufficientBalance() {
         goldPassenger = new GoldPassenger("John Doe", "1", 50.0);
+        TravelPackage travelPackage = new TravelPackage("Package 1",2);
+        Destination destination = new Destination("Destination 1");
+        activity.setParentDestination(destination);
+        travelPackage.addDestination(destination);
+        goldPassenger.addToOptedPackages(travelPackage);
+
         assertFalse(goldPassenger.signUpForActivity(activity));
-        assertTrue(goldPassenger.getActivities().isEmpty());
+        assertTrue(goldPassenger.getOptedActivities().isEmpty());
         assertEquals(50.0, goldPassenger.getBalance());
     }
 

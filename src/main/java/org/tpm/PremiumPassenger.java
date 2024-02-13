@@ -10,8 +10,20 @@ public class PremiumPassenger extends Passenger {
         if (activity == null) {
             throw new IllegalArgumentException("Activity cannot be null");
         }
+
+        boolean withinPack = false;
+        for(var pack : this.optedPackages){
+            if (pack.getDestinations().contains(activity.getParentDestination())) {
+                withinPack = true;
+                break;
+            } 
+        }
+        if (!withinPack) {
+            throw new IllegalArgumentException("Activity must belong to opted travel package");
+        }
+
         if(activity.addPassenger(this)) {
-            this.addActivity(activity);
+            this.addToOptedActivities(activity);
             return true;
         }
         return false;
