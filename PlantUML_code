@@ -1,0 +1,147 @@
+@startuml
+skinparam shadowing false
+
+class Activity {
+    -name: String
+    -description: String
+    -cost: double
+    -capacity: int
+    -passengers: Set<Passenger>
+    -parentDestination: Destination
+    -allActivities: Set<Activity>
+    +Activity(name: String, description: String, cost: double, capacity: int)
+    +addPassenger(passenger: Passenger): boolean
+    +setParentDestination(destination: Destination): void
+    +nofSpacesAvailable(): int
+    +getName(): String
+    +getDescription(): String
+    +getCost(): double
+    +getCapacity(): int
+    +getParentDestination(): Destination
+    +getAllActivities(): Set<Activity>
+    +equals(obj: Object): boolean
+    +hashCode(): int
+}
+
+class Destination {
+    -name: String
+    -activities: Set<Activity>
+    +Destination(name: String)
+    +addActivity(activity: Activity): void
+    +getName(): String
+    +getActivities(): Set<Activity>
+    +equals(obj: Object): boolean
+    +hashCode(): int
+}
+
+class Display {
+    +{static} itinerary(travelPackage: TravelPackage): void
+    +{static} passengerList(travelPackage: TravelPackage): void
+    +{static} details(passenger: Passenger): void
+    +{static} spaceAvailableActivities(): void
+}
+
+abstract class Passenger {
+    -name: String
+    -passengerNumber: String
+    #balance: double
+    -optedActivities: Set<Activity>
+    #optedPackages: Set<TravelPackage>
+    +Passenger(name: String, passengerNumber: String, balance: double)
+    +{abstract} signUpForActivity(activity: Activity): boolean
+    +{abstract} entryFee(activity: Activity): double
+    +addToOptedActivities(activity: Activity): void
+    +addToOptedPackages(pack: TravelPackage): void
+    +getName(): String
+    +getPassengerNumber(): String
+    +getBalance(): double
+    +getOptedActivities(): Set<Activity>
+    +equals(obj: Object): boolean
+    +hashCode(): int
+}
+
+class GoldPassenger extends Passenger {
+    +GoldPassenger(name: String, passengerNumber: String, balance: double)
+    +signUpForActivity(activity: Activity): boolean
+    +entryFee(activity: Activity): double
+}
+
+class PremiumPassenger extends Passenger {
+    +PremiumPassenger(name: String, passengerNumber: String)
+    +signUpForActivity(activity: Activity): boolean
+    +entryFee(activity: Activity): double
+}
+
+class StandardPassenger extends Passenger {
+    +StandardPassenger(name: String, passengerNumber: String, balance: double)
+    +signUpForActivity(activity: Activity): boolean
+    +entryFee(activity: Activity): double
+}
+
+class TravelPackage {
+    -name: String
+    -capacity: int
+    -destinations: Set<Destination>
+    -passengers: Set<Passenger>
+    +TravelPackage(name: String, capacity: int)
+    +addDestination(destination: Destination): void
+    +addPassenger(passenger: Passenger): boolean
+    +getName(): String
+    +getCapacity(): int
+    +getDestinations(): Set<Destination>
+    +getPassengers(): Set<Passenger>
+    +equals(obj: Object): boolean
+    +hashCode(): int
+}
+
+class UserInteraction {
+    -scanner: Scanner
+    -travelPackage: TravelPackage
+    -passengers: List<Passenger>
+    +UserInteraction(travelPackage: TravelPackage, passengers: List<Passenger>)
+    +start(): void
+}
+
+class Main {
+    +main(args: String[]): void
+}
+
+Main ..> Activity
+Main ..> Destination
+Main ..> StandardPassenger
+Main ..> GoldPassenger
+Main ..> PremiumPassenger
+Main ..> TravelPackage
+Main ..> UserInteraction
+Main ..> Display
+
+UserInteraction ..> Scanner
+UserInteraction -- TravelPackage
+UserInteraction -- Passenger
+UserInteraction ..> Display
+
+TravelPackage "1" -- "many" Destination : destinations
+TravelPackage "1" -- "many" Passenger : passengers
+
+StandardPassenger --|> Passenger
+StandardPassenger "1" -- "many" Activity : optedActivities
+
+PremiumPassenger --|> Passenger
+PremiumPassenger "1" -- "many" Activity : optedActivities
+
+GoldPassenger --|> Passenger
+GoldPassenger "1" -- "many" Activity : optedActivities
+
+Display ..> TravelPackage
+Display ..> Passenger
+Display ..> Activity
+
+Destination "1" -- "many" Activity : activities
+
+Activity "1" -- "many" Passenger : passengers
+Activity -- Destination : parentDestination
+
+Passenger "1" -- "many" Activity : optedActivities
+Passenger "1" -- "many" TravelPackage : optedPackages
+
+@enduml
